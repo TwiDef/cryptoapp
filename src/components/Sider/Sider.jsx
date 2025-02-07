@@ -1,15 +1,18 @@
 import React from 'react';
-import { useFakeFetch } from '../hooks/useFakeFetch';
-import { Flex, Layout, List, Statistic, Typography } from 'antd';
+import { useFakeFetch } from './../hooks/useFakeFetch';
+import { useDispatch } from 'react-redux';
+import { setAssetsInfo } from '../../redux/slices/assetsSlice';
+import { percentDiff } from './../../helpers';
+import { Flex, Layout, List, Statistic, Typography, Spin } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import Card from 'antd/es/card/Card';
 
 const Sider = () => {
+  const dispatch = useDispatch()
   const { cryptoData, cryptoAssets, loading } = useFakeFetch()
 
   console.log(cryptoData)
   console.log(cryptoAssets)
-  console.log(loading)
 
   const siderStyle = {
     padding: "1rem",
@@ -27,12 +30,31 @@ const Sider = () => {
     'Los Angeles battles huge wildfires.',
   ];
 
+  React.useEffect(() => {
+    dispatch(setAssetsInfo(cryptoAssets && cryptoAssets.map(asset => {
+      const coin = cryptoData.result.find(c => c.id === asset.id)
+
+      return {
+        ...asset,
+        grow: asset.price < coin.price,
+        totalAmount: (asset.amount * coin.price),
+        totalProfit: (asset.amount * coin.price - asset.amount * asset.price),
+        growPercent: percentDiff(asset.price, coin.price)
+      }
+    })))
+
+  }, [cryptoAssets])
+
+  if (loading) {
+    return <Spin fullscreen tip="Loading" size="large" />
+  }
+
   return (
     <Layout.Sider width="25%" style={siderStyle}>
       <Flex gap="middle" vertical>
         <Card>
           <Statistic
-            title="Active"
+            title={cryptoAssets && cryptoAssets[0].id}
             value={56.28}
             precision={2}
             valueStyle={{ color: '#3f8600' }}
