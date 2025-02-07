@@ -1,20 +1,19 @@
 import React from 'react';
 import { useFakeFetch } from './../hooks/useFakeFetch';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setAssetsInfo } from '../../redux/slices/assetsSlice';
 import { percentDiff } from './../../helpers';
-import { Flex, Layout, List, Statistic, Typography, Spin } from 'antd';
+import { Flex, Layout, List, Statistic, Typography, Spin, Tag } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import Card from 'antd/es/card/Card';
 
 const Sider = () => {
   const dispatch = useDispatch()
+  const { assets } = useSelector(state => state.assetsInfo)
   const { cryptoData, cryptoAssets, loading } = useFakeFetch()
 
-  console.log(cryptoData)
-  console.log(cryptoAssets)
-
   const siderStyle = {
+    overflow: "auto",
     padding: "1rem",
     textAlign: 'center',
     lineHeight: '120px',
@@ -22,13 +21,9 @@ const Sider = () => {
     backgroundColor: '#13212b',
   };
 
-  const data = [
-    'Racing car sprays burning fuel into crowd.',
-    'Japanese princess to wed commoner.',
-    'Australian walks 100km after outback crash.',
-    'Man charged over missing wedding girl.',
-    'Los Angeles battles huge wildfires.',
-  ];
+  const cardStyle = {
+    backgroundColor: "#cae0f4"
+  }
 
   React.useEffect(() => {
     dispatch(setAssetsInfo(cryptoAssets && cryptoAssets.map(asset => {
@@ -52,33 +47,34 @@ const Sider = () => {
   return (
     <Layout.Sider width="25%" style={siderStyle}>
       <Flex gap="middle" vertical>
-        <Card>
-          <Statistic
-            title={cryptoAssets && cryptoAssets[0].id}
-            value={56.28}
-            precision={2}
-            valueStyle={{ color: '#3f8600' }}
-            prefix={<ArrowUpOutlined />}
-            suffix="%" />
-          <List
-            dataSource={data}
-            renderItem={(item) => (
-              <List.Item style={{ padding: "8px 0" }}>
-                <Typography.Text mark>[ITEM]</Typography.Text> {item}
-              </List.Item>
-            )}
-          />
-        </Card>
-        <Card bordered={false}>
-          <Statistic
-            title="Idle"
-            value={49.3}
-            precision={2}
-            valueStyle={{ color: '#cf1322' }}
-            prefix={<ArrowDownOutlined />}
-            suffix="%"
-          />
-        </Card>
+        {assets && assets.map(asset => {
+          return (
+            <Card key={asset.id} style={cardStyle}>
+              <Statistic
+                title={asset.id}
+                value={asset.totalAmount}
+                precision={2}
+                valueStyle={asset.grow ? { color: '#3f8600' } : { color: '#cf1322' }}
+                prefix={asset.grow ? <ArrowUpOutlined /> : <ArrowDownOutlined />}
+                suffix="$" />
+              <List
+                dataSource={[
+                  { title: "Total Profit:", value: asset.totalProfit.toFixed(2), isCurrency: true },
+                  { title: "Difference:", value: asset.growPercent.toFixed(2), isCurrency: false },
+                ]}
+                renderItem={(item) => (
+                  <List.Item style={{ padding: "8px 0", fontWeight: "bold" }}>
+                    <span>{item.title}</span>
+                    <Tag color={asset.grow ? "green" : "red"}>
+                      {item.value}
+                      {item.isCurrency ? "$" : "%"}
+                    </Tag>
+                  </List.Item>
+                )}
+              />
+            </Card>
+          )
+        })}
       </Flex>
     </Layout.Sider>
   );

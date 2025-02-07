@@ -3,6 +3,6 @@ import assetsSlice from './slices/assetsSlice';
 
 export const store = configureStore({
   reducer: {
-    assertsInfo: assetsSlice
+    assetsInfo: assetsSlice
   },
 })
