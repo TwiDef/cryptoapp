@@ -3,7 +3,7 @@ import crypto_data from '../../../crypto_data.json';
 
 export const useFakeFetch = () => {
   const [cryptoData, setCryptoData] = React.useState(null)
-  const [cryptoAssets, setCryptoAssets] = React.useState(null)
+  const [cryptoAssets, setCryptoAssets] = React.useState([])
   const [loading, setLoading] = React.useState(false)
 
   React.useEffect(() => {

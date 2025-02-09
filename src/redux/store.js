@@ -1,8 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import assetsSlice from './slices/assetsSlice';
+import cryptoDataSlice from './slices/cryptoDataSlice';
 
 export const store = configureStore({
   reducer: {
-    assetsInfo: assetsSlice
+    crypto_data: cryptoDataSlice
   },
 })
