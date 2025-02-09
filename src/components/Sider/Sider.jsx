@@ -1,16 +1,11 @@
 import React from 'react';
-import { useFakeFetch } from './../hooks/useFakeFetch';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAssetsInfo, setCoinsInfo } from '../../redux/slices/cryptoDataSlice';
-import { percentDiff } from './../../helpers';
-import { Flex, Layout, List, Statistic, Spin, Tag } from 'antd';
+import { useSelector } from 'react-redux';
+import { Flex, Layout, List, Statistic, Tag } from 'antd';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import Card from 'antd/es/card/Card';
 
 const Sider = () => {
-  const dispatch = useDispatch()
   const { assets } = useSelector(state => state.crypto_data)
-  const { cryptoData, cryptoAssets, loading } = useFakeFetch()
 
   const siderStyle = {
     overflow: "auto",
@@ -21,25 +16,12 @@ const Sider = () => {
     backgroundColor: '#13212b',
   };
 
-  const cardStyle = {
-    backgroundColor: "#cae0f4"
-  }
-
-  React.useEffect(() => {
-    dispatch(setCoinsInfo(cryptoData))
-    dispatch(setAssetsInfo(cryptoAssets))
-  }, [cryptoData, cryptoAssets])
-
-  if (loading) {
-    return <Spin fullscreen tip="Loading" size="large" />
-  }
-
   return (
     <Layout.Sider width="25%" style={siderStyle}>
       <Flex gap="middle" vertical>
         {assets && assets.map(asset => {
           return (
-            <Card key={asset.id} style={cardStyle}>
+            <Card key={asset.id} style={{ backgroundColor: "#cae0f4" }}>
               <Statistic
                 title={asset.id}
                 value={asset.totalAmount}
