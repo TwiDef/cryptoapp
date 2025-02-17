@@ -1,0 +1,9 @@
+.ant-drawer .ant-drawer-close {
+    color: #fff;
+    width: 24px;
+    height: 24px;
+}
+
+.ant-drawer .ant-drawer-close svg {
+    font-size: 20px;
+}

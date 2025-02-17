@@ -1,8 +1,14 @@
 import React from 'react';
-import { Button, Layout, Select, Space } from 'antd';
+import { Button, Layout, Select, Space, Modal, Drawer } from 'antd';
 import { useSelector } from 'react-redux';
+import CoinInfoModal from '../CoinInfoModal';
+
+import './Header.css';
 
 const Header = () => {
+  const [isModalOpen, setIsModalOpen] = React.useState(false)
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false)
+  const [coin, setCoin] = React.useState("")
   const { coins_data } = useSelector(state => state.crypto_data)
 
   const headerStyle = {
@@ -16,11 +22,17 @@ const Header = () => {
     backgroundColor: '#344c62',
   }
 
+  const handleSelect = (value) => {
+    setCoin(coins_data.result.find((coin) => coin.id === value))
+    setIsModalOpen(true)
+  }
+
   return (
     <Layout.Header style={headerStyle}>
       <Select
         style={{ width: "20%" }}
         placeholder="select coin"
+        onSelect={handleSelect}
         options={coins_data?.result?.map(coin => ({
           label: coin.name,
           value: coin.id,
@@ -28,15 +40,36 @@ const Header = () => {
         }))}
         optionRender={(option) => (
           <Space style={{ display: "flex", alignItems: "center" }}>
-            <img style={{ width: "30px" }} src={option.data.icon} alt={option.data.label} />
+            <img style={{ width: "26px" }} src={option.data.icon} alt={option.data.label} />
             {option.label}
           </Space>
         )}
       />
+
+      <Modal
+        open={isModalOpen}
+        onCancel={() => setIsModalOpen(false)}
+        footer={null}>
+        <CoinInfoModal coin={coin} />
+      </Modal>
+
       <Button
+        onClick={() => setIsDrawerOpen(prev => !prev)}
         style={{ backgroundColor: "#cae0f4", color: "#000", fontWeight: "bold" }} type="primary">
-        Primary Button
+        Add Asset
       </Button>
+
+      <Drawer
+        onClose={() => setIsDrawerOpen(false)}
+        open={isDrawerOpen}
+        title="Add Asset"
+        width={600}
+        style={{ background: "#344c62", color: "#ffffff" }}>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+        <p>Some contents...</p>
+      </Drawer>
+
     </Layout.Header>
   );
 };
