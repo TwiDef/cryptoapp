@@ -69,7 +69,7 @@ const Header = () => {
         width={600}
         style={{ background: "#344c62", color: "#ffffff" }}>
 
-        <AddAssetForm />
+        <AddAssetForm setIsDrawerOpen={setIsDrawerOpen} />
       </Drawer>
 
     </Layout.Header>

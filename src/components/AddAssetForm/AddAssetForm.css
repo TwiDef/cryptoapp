@@ -11,3 +11,14 @@
 .ant-input-number .ant-input-number-input .total-label {
     color: rgba(255, 255, 255, 0.88);
 }
+.ant-input-number-disabled .ant-input-number-input {
+    font-weight: bold;
+    color: rgba(255, 255, 255, 1);
+}
+
+.ant-result .ant-result-title {
+    color: rgb(251, 251, 251);
+}
+.ant-result .ant-result-subtitle {
+    color: rgba(255, 255, 255, 0.88);
+}
