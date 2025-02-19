@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Layout, Select, Space, Modal, Drawer } from 'antd';
 import { useSelector } from 'react-redux';
 import CoinInfoModal from '../CoinInfoModal';
+import AddAssetForm from '../AddAssetForm';
 
 import './Header.css';
 
@@ -62,12 +63,13 @@ const Header = () => {
       <Drawer
         onClose={() => setIsDrawerOpen(false)}
         open={isDrawerOpen}
+        destroyOnClose
+        placement="left"
         title="Add Asset"
         width={600}
         style={{ background: "#344c62", color: "#ffffff" }}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
+
+        <AddAssetForm />
       </Drawer>
 
     </Layout.Header>
