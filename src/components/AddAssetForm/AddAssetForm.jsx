@@ -1,10 +1,12 @@
 import React from 'react';
 import { Button, DatePicker, Divider, Flex, Form, InputNumber, Result, Select, Space } from 'antd';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { addNewAsset } from '../../redux/slices/cryptoDataSlice';
 
 import './AddAssetForm.css';
 
 const AddAssetForm = ({ setIsDrawerOpen }) => {
+  const dispatch = useDispatch()
   const { coins_data } = useSelector(state => state.crypto_data)
   const [form] = Form.useForm()
   const [coin, setCoin] = React.useState(null)
@@ -12,15 +14,15 @@ const AddAssetForm = ({ setIsDrawerOpen }) => {
   const assetRef = React.useRef()
 
   const onFinish = (values) => {
-    console.log('Success:', values)
-
     const newAsset = {
       id: coin.id,
       amount: values.amount,
       price: values.price,
-      date: values.date?.$d ?? new Date()
+      date: Date.parse(values.date?.$d ?? new Date())
     }
+
     assetRef.current = newAsset
+    dispatch(addNewAsset(newAsset))
     setIsSubmitted(true)
   }
 
@@ -102,7 +104,7 @@ const AddAssetForm = ({ setIsDrawerOpen }) => {
             maxWidth: "100%",
           }}
           initialValues={{
-            price: +(coin.price.toFixed(4)),
+            price: +(coin.price.toFixed(8)),
           }}
           onFinish={onFinish}
           validatemessage={validateMessage}
