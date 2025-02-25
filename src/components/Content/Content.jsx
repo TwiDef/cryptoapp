@@ -1,6 +1,7 @@
 import React from 'react';
 import { Flex, Layout, Typography } from 'antd';
 import { useSelector } from 'react-redux';
+import Chart from '../Chart';
 
 const Content = () => {
 
@@ -31,6 +32,7 @@ const Content = () => {
           </span>
         </Typography.Title>
       </Flex>
+      <Chart />
     </Layout.Content>
   );
 };
