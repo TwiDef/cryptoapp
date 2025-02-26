@@ -11,9 +11,7 @@ import Sider from './components/Sider';
 function App() {
 
   const layoutStyle = {
-    overflow: 'hidden',
     width: '100%',
-    height: '100vh'
   }
 
   const dispatch = useDispatch()

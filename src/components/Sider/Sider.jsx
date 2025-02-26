@@ -31,8 +31,8 @@ const Sider = () => {
                 suffix="$" />
               <List
                 dataSource={[
-                  { title: "Total Profit:", value: asset.totalProfit.toFixed(2), isCurrency: true },
-                  { title: "Difference:", value: asset.growPercent.toFixed(2), isCurrency: false },
+                  { title: "Total Profit:", value: asset.totalProfit.toFixed(6), isCurrency: true },
+                  { title: "Difference:", value: asset.growPercent.toFixed(6), isCurrency: false },
                 ]}
                 renderItem={(item) => (
                   <List.Item style={{ padding: "8px 0", fontWeight: "bold" }}>
